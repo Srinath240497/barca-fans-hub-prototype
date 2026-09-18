@@ -197,10 +197,10 @@ export const PULSE_REACTIONS = [
 export const HALFTIME_NOMINEES = ["yamal", "raphinha", "pedri", "cubarsi"] as const;
 
 export const COMMUNITIES = [
-  { id: "global", emoji: "🌍", name: "Global Culers", members: "184M", pulse: "Matchday high" },
-  { id: "uk", emoji: "🇬🇧", name: "United Kingdom", members: "2.1M", pulse: "London leading" },
-  { id: "london", emoji: "📍", name: "London", members: "186k", pulse: "Penya night" },
-  { id: "penya", emoji: "🛡", name: "Penya de Londres", members: "4,820", pulse: "Clash live" },
+  { id: "global", emoji: "🌍", name: "Global Culers", activity: "Matchday active" },
+  { id: "uk", emoji: "🇬🇧", name: "United Kingdom", activity: "Active now" },
+  { id: "london", emoji: "📍", name: "London", activity: "Local" },
+  { id: "penya", emoji: "🛡", name: "Penya de Londres", activity: "Live" },
 ] as const;
 
 export const REGIONAL_LEADERBOARD = [

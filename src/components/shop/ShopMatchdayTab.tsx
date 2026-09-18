@@ -18,7 +18,7 @@ export function ShopMatchdayTab() {
           Official commerce, connected to who you are.
         </h1>
         <p className="max-w-2xl text-sm leading-relaxed text-muted md:text-base">
-          We don’t rebuild the store. We recognise the fan who shops, walks in, and sits down.
+          We don’t rebuild commerce. We connect verified purchases and matchday activity to one fan identity.
         </p>
       </header>
 

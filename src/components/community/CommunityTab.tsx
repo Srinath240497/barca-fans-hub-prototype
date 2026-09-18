@@ -60,9 +60,7 @@ export function CommunityTab() {
               <p className="font-semibold">
                 {community.emoji} {community.name}
               </p>
-              <p className="mt-1 text-xs text-muted">
-                {community.members} · {community.pulse}
-              </p>
+              <p className="mt-1 text-xs text-muted">{community.activity}</p>
             </div>
           ))}
         </div>
