@@ -41,6 +41,9 @@ export function createInitialState(): FanState {
     penyaMissionProgress: 3,
     stadiumCheckedIn: true,
     stadiumPurchase: false,
+    officialMidfieldVote: null,
+    officialQuizCompleted: false,
+    pendingPlaySegment: null,
     activity: [
       {
         id: "seed-drill",

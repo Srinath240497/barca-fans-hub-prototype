@@ -10,11 +10,13 @@ import {
   useState,
 } from "react";
 import { createInitialState, STORAGE_KEY } from "./mock-data";
+import { applyOfficialMidfieldVote, applyOfficialQuizComplete } from "./official-content";
 import type {
   FanContextValue,
   FanState,
   LiveReactionId,
   MatchPlan,
+  PlaySegment,
   PollChoice,
 } from "./types";
 
@@ -26,6 +28,10 @@ type Action =
   | { type: "SET_HALFTIME_VOTE"; playerId: string }
   | { type: "COMPLETE_DAILY_DRILL" }
   | { type: "CAST_COMMUNITY_POLL"; choice: PollChoice }
+  | { type: "CAST_OFFICIAL_MIDFIELD_VOTE"; playerId: string }
+  | { type: "COMPLETE_OFFICIAL_QUIZ" }
+  | { type: "OPEN_PLAY"; segment: PlaySegment }
+  | { type: "CONSUME_PLAY_NAV" }
   | { type: "SIMULATE_POS" }
   | { type: "RESET" }
   | { type: "DISMISS_TOAST" };
@@ -107,6 +113,14 @@ function reducer(state: FanState, action: Action): FanState {
           ...state.activity,
         ],
       };
+    case "CAST_OFFICIAL_MIDFIELD_VOTE":
+      return applyOfficialMidfieldVote(state, action.playerId);
+    case "COMPLETE_OFFICIAL_QUIZ":
+      return applyOfficialQuizComplete(state);
+    case "OPEN_PLAY":
+      return { ...state, pendingPlaySegment: action.segment };
+    case "CONSUME_PLAY_NAV":
+      return { ...state, pendingPlaySegment: null };
     case "SIMULATE_POS":
       if (state.stadiumPurchase) return state;
       return {
@@ -159,7 +173,7 @@ export function FanProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!hydrated) return;
-    const persisted = { ...state, toast: null };
+    const persisted = { ...state, toast: null, pendingPlaySegment: null };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(persisted));
   }, [hydrated, state]);
 
@@ -191,6 +205,22 @@ export function FanProvider({ children }: { children: React.ReactNode }) {
     dispatch({ type: "SIMULATE_POS" });
   }, []);
 
+  const castOfficialMidfieldVote = useCallback((playerId: string) => {
+    dispatch({ type: "CAST_OFFICIAL_MIDFIELD_VOTE", playerId });
+  }, []);
+
+  const completeOfficialQuiz = useCallback(() => {
+    dispatch({ type: "COMPLETE_OFFICIAL_QUIZ" });
+  }, []);
+
+  const openPlay = useCallback((segment: PlaySegment) => {
+    dispatch({ type: "OPEN_PLAY", segment });
+  }, []);
+
+  const consumePlayNav = useCallback(() => {
+    dispatch({ type: "CONSUME_PLAY_NAV" });
+  }, []);
+
   const resetDemo = useCallback(() => {
     localStorage.removeItem(STORAGE_KEY);
     dispatch({ type: "RESET" });
@@ -210,6 +240,10 @@ export function FanProvider({ children }: { children: React.ReactNode }) {
       completeDailyDrill,
       castCommunityPoll,
       simulatePosEvent,
+      castOfficialMidfieldVote,
+      completeOfficialQuiz,
+      openPlay,
+      consumePlayNav,
       resetDemo,
       dismissToast,
     }),
@@ -222,6 +256,10 @@ export function FanProvider({ children }: { children: React.ReactNode }) {
       completeDailyDrill,
       castCommunityPoll,
       simulatePosEvent,
+      castOfficialMidfieldVote,
+      completeOfficialQuiz,
+      openPlay,
+      consumePlayNav,
       resetDemo,
       dismissToast,
     ],

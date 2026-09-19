@@ -72,6 +72,9 @@ export interface FanState {
   penyaMissionProgress: number;
   stadiumCheckedIn: boolean;
   stadiumPurchase: boolean;
+  officialMidfieldVote: string | null;
+  officialQuizCompleted: boolean;
+  pendingPlaySegment: PlaySegment | null;
   activity: ActivityEntry[];
   toast: ToastState | null;
 }
@@ -85,6 +88,27 @@ export interface FanContextValue {
   completeDailyDrill: () => void;
   castCommunityPoll: (choice: PollChoice) => void;
   simulatePosEvent: () => void;
+  castOfficialMidfieldVote: (playerId: string) => void;
+  completeOfficialQuiz: () => void;
+  openPlay: (segment: PlaySegment) => void;
+  consumePlayNav: () => void;
   resetDemo: () => void;
   dismissToast: () => void;
+}
+
+export type BarcaContentCTA = "vote" | "predict" | "quiz" | "challenge";
+
+export interface BarcaOfficialContent {
+  id: string;
+  category: string;
+  headline: string;
+  summary: string;
+  source: "Official FC Barcelona";
+  publishedAt: string;
+  cta: {
+    type: BarcaContentCTA;
+    label: string;
+    target?: PlaySegment;
+  };
+  votePlayerIds?: string[];
 }

@@ -2,14 +2,17 @@
 
 import { SegmentedControl } from "@/components/SegmentedControl";
 import type { PlaySegment } from "@/lib/types";
-import { useState } from "react";
 import { LiveMatch } from "./LiveMatch";
 import { Midweek } from "./Midweek";
 import { PreMatch } from "./PreMatch";
 
-export function PlayTab() {
-  const [segment, setSegment] = useState<PlaySegment>("prematch");
-
+export function PlayTab({
+  segment,
+  onSegmentChange,
+}: {
+  segment: PlaySegment;
+  onSegmentChange: (segment: PlaySegment) => void;
+}) {
   return (
     <div className="mx-auto w-full min-w-0 max-w-5xl space-y-5">
       <header className="space-y-3">
@@ -25,7 +28,7 @@ export function PlayTab() {
       <SegmentedControl
         ariaLabel="Play modes"
         value={segment}
-        onChange={setSegment}
+        onChange={onSegmentChange}
         options={[
           { id: "prematch", label: "Pre-Match" },
           { id: "live", label: "Live" },

@@ -1,6 +1,7 @@
 "use client";
 
 import { CommunityChallenge } from "@/components/CommunityChallenge";
+import { OfficialBarcaContentSection } from "@/components/community/OfficialBarcaContentSection";
 import { SegmentedControl } from "@/components/SegmentedControl";
 import { Card, Eyebrow, StatusPill } from "@/components/ui";
 import { useFan } from "@/lib/fan-store";
@@ -41,6 +42,8 @@ export function CommunityTab() {
           { id: "penya", label: "Penya de Londres" },
         ]}
       />
+
+      <OfficialBarcaContentSection />
 
       <Card>
         <Eyebrow>Your Communities</Eyebrow>

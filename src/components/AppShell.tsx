@@ -9,11 +9,11 @@ import { PassportTab } from "@/components/passport/PassportTab";
 import { PlayTab } from "@/components/play/PlayTab";
 import { ShopMatchdayTab } from "@/components/shop/ShopMatchdayTab";
 import { useFan } from "@/lib/fan-store";
-import type { TabId } from "@/lib/types";
+import type { PlaySegment, TabId } from "@/lib/types";
 import { cn, formatPoints, formatXp } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import { Fingerprint, Target, Ticket, Users } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const TABS: { id: TabId; label: string; short: string; icon: typeof Target }[] = [
   { id: "play", label: "Play", short: "Play", icon: Target },
@@ -24,7 +24,15 @@ const TABS: { id: TabId; label: string; short: string; icon: typeof Target }[] =
 
 export function AppShell() {
   const [tab, setTab] = useState<TabId>("play");
-  const { state, resetDemo } = useFan();
+  const [playSegment, setPlaySegment] = useState<PlaySegment>("prematch");
+  const { state, resetDemo, consumePlayNav } = useFan();
+
+  useEffect(() => {
+    if (!state.pendingPlaySegment) return;
+    setTab("play");
+    setPlaySegment(state.pendingPlaySegment);
+    consumePlayNav();
+  }, [state.pendingPlaySegment, consumePlayNav]);
 
   return (
     <div className="min-h-dvh overflow-x-hidden">
@@ -82,7 +90,9 @@ export function AppShell() {
                 exit={{ opacity: 0, y: -8 }}
                 transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
               >
-                {tab === "play" && <PlayTab />}
+                {tab === "play" && (
+                  <PlayTab segment={playSegment} onSegmentChange={setPlaySegment} />
+                )}
                 {tab === "community" && <CommunityTab />}
                 {tab === "shop" && <ShopMatchdayTab />}
                 {tab === "passport" && <PassportTab />}
